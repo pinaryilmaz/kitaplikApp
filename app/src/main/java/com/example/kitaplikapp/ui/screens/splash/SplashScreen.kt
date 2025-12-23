@@ -43,11 +43,8 @@ fun SplashScreen(
     val user by authVm.loggedInUser.collectAsState()
 
     LaunchedEffect(key1 = true) {
-        // 1. Animasyonu başlat
         startAnimation = true
-        // 2. 2 saniye bekle (Marka görünümü için)
         delay(2000)
-        // 3. Kullanıcı durumuna göre yönlendir
         if (user != null) {
             onNavigateToMain()
         } else {
@@ -58,7 +55,7 @@ fun SplashScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.primary), // Arka planı mor yaptık
+            .background(MaterialTheme.colorScheme.primary),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -69,7 +66,7 @@ fun SplashScreen(
         ) {
             Surface(
                 shape = CircleShape,
-                color = Color.White, // Logonun arkası beyaz
+                color = Color.White,
                 shadowElevation = 8.dp
             ) {
                 Icon(
@@ -78,14 +75,14 @@ fun SplashScreen(
                     modifier = Modifier
                         .padding(24.dp)
                         .size(64.dp),
-                    tint = MaterialTheme.colorScheme.primary // İkon mor
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
             Spacer(modifier = Modifier.height(24.dp))
             Text(
                 text = "MorKitap",
                 style = MaterialTheme.typography.headlineLarge,
-                color = Color.White, // Yazı beyaz
+                color = Color.White,
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(8.dp))

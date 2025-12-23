@@ -39,10 +39,9 @@ fun SettingsScreen(
     val profileUriStr by vm.profileUri.collectAsState()
     val libraryBooks by homeVm.libraryBooks.collectAsState()
 
-    // ✅ YENİ: Düzenleme penceresinin açık/kapalı durumu
     var showEditDialog by remember { mutableStateOf(false) }
 
-    // --- İSTATİSTİK HESAPLAMALARI ---
+    // istatistik hesaplamaları için
     val totalBooks = libraryBooks.size
     val readBooksCount = libraryBooks.count { it.isRead }
     val totalPagesRead = libraryBooks.filter { it.isRead }.sumOf { it.pageCount }
@@ -55,7 +54,6 @@ fun SettingsScreen(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? -> vm.setProfileUri(uri?.toString()) }
 
-    // ✅ YENİ: Düzenleme Dialogu Açılırsa Göster
     if (showEditDialog) {
         EditProfileDialog(
             currentName = user?.fullName ?: "",
@@ -63,7 +61,6 @@ fun SettingsScreen(
             currentPass = user?.password ?: "",
             onDismiss = { showEditDialog = false },
             onSave = { newName, newUser, newPass ->
-                // AuthViewModel içindeki güncelleme fonksiyonunu çağırıyoruz
                 authVm.updateUser(newName, newUser, newPass)
                 showEditDialog = false
             }
@@ -84,7 +81,7 @@ fun SettingsScreen(
         ) {
             Text("Profil ve Ayarlar", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
 
-            // 1. PROFİL KARTI
+            // profil kartı
             Card(
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
@@ -130,14 +127,14 @@ fun SettingsScreen(
                         }
                     }
 
-                    // ✅ YENİ: Düzenleme (Kalem) Butonu
+                    // kalem butonu
                     IconButton(onClick = { showEditDialog = true }) {
                         Icon(Icons.Filled.Edit, contentDescription = "Düzenle", tint = MaterialTheme.colorScheme.onPrimaryContainer)
                     }
                 }
             }
 
-            // 2. İSTATİSTİKLER
+            // istatistikler
             Text("Okuma İstatistiklerim", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
 
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -150,7 +147,7 @@ fun SettingsScreen(
                 StatCard(Icons.Default.Category, favoriteGenre, "Favori Tür", MaterialTheme.colorScheme.surfaceVariant, Modifier.weight(1f))
             }
 
-            // 3. TEMA AYARI
+            // light-dark mode ayarı
             Card(
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
@@ -171,7 +168,7 @@ fun SettingsScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // 4. ÇIKIŞ BUTONU
+            // çıkış yap butonu
             OutlinedButton(
                 onClick = { authVm.logout(); onLogout() },
                 modifier = Modifier.fillMaxWidth(),
@@ -188,7 +185,6 @@ fun SettingsScreen(
     }
 }
 
-// ✅ YENİ: Profil Düzenleme Penceresi Bileşeni
 @Composable
 fun EditProfileDialog(
     currentName: String,

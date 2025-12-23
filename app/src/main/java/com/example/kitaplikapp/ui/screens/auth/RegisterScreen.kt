@@ -22,8 +22,8 @@ import com.example.kitaplikapp.viewmodel.AuthViewModel
 
 @Composable
 fun RegisterScreen(
-    onRegisterSuccess: () -> Unit, // ✅ İsim güncellendi
-    onNavigateToLogin: () -> Unit, // ✅ Eksik parametre eklendi
+    onRegisterSuccess: () -> Unit,
+    onNavigateToLogin: () -> Unit,
     authVm: AuthViewModel
 ) {
     var fullName by remember { mutableStateOf("") }
@@ -34,7 +34,7 @@ fun RegisterScreen(
 
     val message by authVm.message.collectAsState()
 
-    // Kayıt başarılıysa yönlendir
+    // Kayıt başarılıysa yönlendirir
     LaunchedEffect(message) {
         if (message == "Kayıt başarılı") onRegisterSuccess()
     }
@@ -193,7 +193,6 @@ fun RegisterScreen(
                             }
                         }
 
-                        // ✅ EKLENEN KISIM: Zaten hesabın var mı?
                         item {
                             Spacer(Modifier.height(14.dp))
                             Row(

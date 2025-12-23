@@ -12,7 +12,7 @@ import com.example.kitaplikapp.ui.screens.auth.LoginScreen
 import com.example.kitaplikapp.ui.screens.auth.RegisterScreen
 import com.example.kitaplikapp.ui.screens.detail.BookDetailScreen
 import com.example.kitaplikapp.ui.screens.main.MainScaffold
-import com.example.kitaplikapp.ui.screens.splash.SplashScreen // ✅ Yeni import
+import com.example.kitaplikapp.ui.screens.splash.SplashScreen
 import com.example.kitaplikapp.viewmodel.AuthViewModel
 import com.example.kitaplikapp.viewmodel.HomeViewModel
 
@@ -25,19 +25,19 @@ fun AppNavGraph(
 
     NavHost(
         navController = navController,
-        startDestination = "splash" // ✅ BAŞLANGIÇ NOKTASI DEĞİŞTİ
+        startDestination = "splash"
     ) {
-        // ✅ YENİ: SPLASH EKRANI ROTASI
+        // splash ekranına yönlendirme
         composable("splash") {
             SplashScreen(
                 onNavigateToLogin = {
-                    // Splash'ten Login'e git ve geri dönülememesini sağla
+                    // splash'ten login'e gitmeyi ve geri dönülememesini sağlarız
                     navController.navigate(Routes.Login.route) {
                         popUpTo("splash") { inclusive = true }
                     }
                 },
                 onNavigateToMain = {
-                    // Splash'ten Ana ekrana git ve geri dönülememesini sağla
+                    // splash'ten ana ekrana gitmeyi ve geri dönülememesini sağlarız
                     navController.navigate(Routes.Main.route) {
                         popUpTo("splash") { inclusive = true }
                     }

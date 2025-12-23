@@ -18,7 +18,7 @@ fun AuthBackground(
         colors = listOf(
             Color(0xFF1B0B3A), // koyu mor
             Color(0xFF2D145C), // orta mor
-            Color(0xFF0F0724)  // daha koyu
+            Color(0xFF0F0724)  // daha koyu mor
         ),
         center = Offset(0.5f, 0.2f),
         radius = 1200f

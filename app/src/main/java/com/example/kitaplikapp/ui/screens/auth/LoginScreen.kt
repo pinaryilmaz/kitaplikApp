@@ -23,7 +23,7 @@ import com.example.kitaplikapp.viewmodel.AuthViewModel
 @Composable
 fun LoginScreen(
     onLoginSuccess: () -> Unit,
-    onNavigateToRegister: () -> Unit, // ✅ İsim güncellendi (AppNavGraph ile uyumlu)
+    onNavigateToRegister: () -> Unit,
     authVm: AuthViewModel
 ) {
     var username by remember { mutableStateOf("") }
@@ -65,7 +65,7 @@ fun LoginScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
 
-                        // ✅ HEADER: Başlık + slogan + logo
+                        // header: başlık + slogan + logo
                         item {
                             Column(
                                 modifier = Modifier.fillMaxWidth(),
@@ -181,7 +181,7 @@ fun LoginScreen(
                                 Text(text = "Hesabın yok mu?")
                                 Spacer(Modifier.width(6.dp))
                                 TextButton(
-                                    onClick = onNavigateToRegister, // ✅ Burası da güncellendi
+                                    onClick = onNavigateToRegister,
                                     contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
                                 ) {
                                     Text("Kaydol")

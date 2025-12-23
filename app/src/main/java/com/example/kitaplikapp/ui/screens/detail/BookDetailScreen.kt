@@ -38,16 +38,16 @@ fun BookDetailScreen(
     val user by authVm.loggedInUser.collectAsState()
     val username = user?.username?.trim().orEmpty()
 
-    // Verileri çekiyoruz
+    // verileri çektiğimiz kısım
     val books by vm.books.collectAsState()
     val libraryBooks by vm.libraryBooks.collectAsState()
 
-    // Kitabı bul (Hem ana listeden hem kitaplıktan bakıyoruz)
+    // kitabı bul (hem ana listeden hem kitaplıktan bakılır)
     val book = remember(books, libraryBooks, bookId) {
         books.find { it.id == bookId } ?: libraryBooks.find { it.id == bookId }
     }
 
-    // Kitaplıkta ekli mi kontrolü
+    // kitaplıkta ekli mi kontrolü yapılır
     val libraryBook = remember(libraryBooks, bookId) {
         libraryBooks.find { it.id == bookId }
     }
@@ -82,14 +82,13 @@ fun BookDetailScreen(
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // 1. Kapak Görseli ve Arka Plan Efekti
+            // kapak görseli için
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(320.dp),
                 contentAlignment = Alignment.Center
             ) {
-                // Arka plan flu efekti (Opsiyonel: Box rengi ile de yapılabilir)
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -105,7 +104,7 @@ fun BookDetailScreen(
                         )
                 )
 
-                // Asıl Kapak Resmi
+                // asıl kapak resmi
                 AsyncImage(
                     model = book.coverUrl.ifBlank { null },
                     contentDescription = book.title,
@@ -120,7 +119,6 @@ fun BookDetailScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // 2. Başlık ve Yazar Bilgisi
             Text(
                 text = book.title,
                 style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
@@ -139,7 +137,7 @@ fun BookDetailScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // 3. İstatistik Kartları (Sayfa, Dil, Kategori)
+            // istatistik kartları
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
@@ -155,13 +153,13 @@ fun BookDetailScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // 4. Aksiyon Butonları (Ekle, Favori, Okundu)
+            // ekle, favori, okundu butonları
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Kitaplığa Ekle / Çıkar
+                // kitaplığa ekle / çıkar
                 Button(
                     onClick = {
                         if (isAdded) vm.removeFromLibrary(username, book.id)
@@ -186,10 +184,10 @@ fun BookDetailScreen(
 
                 Spacer(Modifier.width(16.dp))
 
-                // Favori Butonu (Sadece ekliyse veya değilse de çalışabilir, mantığına göre değişir)
+                // favori butonu
                 FilledTonalIconButton(
                     onClick = { vm.toggleFavorite(username, book.id) },
-                    enabled = isAdded // Sadece kitaplıktaysa favorilenebilir (Opsiyonel)
+                    enabled = isAdded // sadece kitaplıktaysa favorilenebilir
                 ) {
                     Icon(
                         imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
@@ -199,7 +197,7 @@ fun BookDetailScreen(
                 }
             }
 
-            // Okundu Durumu (Sadece kitaplıktaysa göster)
+            // okundu durumu
             if (isAdded) {
                 Spacer(Modifier.height(16.dp))
                 FilterChip(
@@ -217,7 +215,7 @@ fun BookDetailScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // 5. Açıklama / Özet Kısmı
+
             Column(modifier = Modifier.padding(horizontal = 24.dp)) {
                 Text(
                     text = "Kitap Hakkında",
@@ -238,7 +236,7 @@ fun BookDetailScreen(
     }
 }
 
-// Ufak Bilgi Kartı Bileşeni
+//  bilgi kartı bileşeni
 @Composable
 fun BookInfoBadge(icon: androidx.compose.ui.graphics.vector.ImageVector, label: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {

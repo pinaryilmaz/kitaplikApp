@@ -20,7 +20,7 @@ fun MainScaffold(
     authVm: AuthViewModel,
     onLogout: () -> Unit,
     rootNavController: NavController,
-    vm: HomeViewModel // ✅ YENİ PARAMETRE: Yukarıdan gelen VM'i al
+    vm: HomeViewModel
 ) {
     val bottomNavController = rememberNavController()
 
@@ -36,7 +36,7 @@ fun MainScaffold(
                 HomeScreen(
                     navController = rootNavController,
                     authVm = authVm,
-                    vm = vm // ✅ HomeScreen'e eldeki dolu VM'i veriyoruz
+                    vm = vm
                 )
             }
 
@@ -44,14 +44,14 @@ fun MainScaffold(
                 LibraryScreen(
                     navController = rootNavController,
                     authVm = authVm,
-                    vm = vm // ✅ LibraryScreen'e de aynı VM'i veriyoruz
+                    vm = vm
                 )
             }
 
             composable(Routes.Settings.route) {
                 SettingsScreen(
                     authVm = authVm,
-                    homeVm = vm, // ✅ BU SATIRI EKLEMELİSİN
+                    homeVm = vm,
                     onLogout = onLogout
                 )
             }

@@ -27,8 +27,7 @@ class HomeViewModel(app: Application) : AndroidViewModel(app) {
     val error: StateFlow<String?> = _error.asStateFlow()
 
     /**
-     * Kullanıcı değiştiğinde (login/logout) veya ekran açıldığında çağır.
-     * Library ekranında filtrelerin doğru çalışması için de önemli.
+     * kullanıcı değiştiğinde (login/logout) veya ekran açıldığında çağırırız
      */
     fun refreshLibrary(username: String) {
         val u = username.trim()
@@ -43,7 +42,6 @@ class HomeViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    // ✅ GÜNCELLENDİ: Hata durumunda manuel liste yükleniyor
     fun loadDefault(username: String) {
         val u = username.trim()
         if (u.isBlank()) return
@@ -52,16 +50,15 @@ class HomeViewModel(app: Application) : AndroidViewModel(app) {
             _loading.value = true
             _error.value = null
             try {
-                // Varsayılan keşfet listesi (API'den çekmeyi dener)
+                //  keşfet listesi (API'den çekmeyi deneriz)
                 _books.value = repo.searchFromApiOrFallback(u, "subject:fiction")
 
-                // Eğer API boş dönerse de fallback devreye girsin istersen:
+                // eğer API boş dönerse de fallback devreye girer
                 if (_books.value.isEmpty()) {
                     _books.value = getOfflineFallbackBooks()
                 }
 
             } catch (e: Exception) {
-                // 🚨 B PLANINI DEVREYE SOK (Hata alırsak)
                 _error.value = "Bağlantı sorunu! Örnek veriler gösteriliyor."
                 _books.value = getOfflineFallbackBooks()
             } finally {
@@ -70,7 +67,7 @@ class HomeViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    // ✅ GÜNCELLENDİ: Hata durumunda manuel liste yükleniyor
+    // hata durumunda manuel liste yüklenir
     private fun load(username: String, query: String) {
         val u = username.trim()
         if (u.isBlank()) return
@@ -81,7 +78,6 @@ class HomeViewModel(app: Application) : AndroidViewModel(app) {
             try {
                 _books.value = repo.searchFromApiOrFallback(u, query)
             } catch (e: Exception) {
-                // 🚨 B PLANINI DEVREYE SOK
                 _error.value = "Arama başarısız. Örnek kitaplar gösteriliyor."
                 _books.value = getOfflineFallbackBooks()
             } finally {
@@ -102,7 +98,6 @@ class HomeViewModel(app: Application) : AndroidViewModel(app) {
         load(u, q)
     }
 
-    // ✅ GÜNCELLENDİ: Akıllı arama hata verirse manuel liste yükleniyor
     fun searchSmart(username: String, input: String) {
         val u = username.trim()
         if (u.isBlank()) return
@@ -147,14 +142,12 @@ class HomeViewModel(app: Application) : AndroidViewModel(app) {
 
                 if (results.isEmpty()) {
                     _error.value = "Sonuç bulunamadı."
-                    // İstersen burada da fallback gösterebilirsin ama boş liste daha mantıklı olabilir.
                     _books.value = emptyList()
                 } else {
                     _books.value = results
                 }
 
             } catch (e: Exception) {
-                // 🚨 B PLANINI DEVREYE SOK
                 _error.value = "Akıllı arama yapılamadı. Örnek kitaplar:"
                 _books.value = getOfflineFallbackBooks()
             } finally {
@@ -163,18 +156,13 @@ class HomeViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    /**
-     * @return true -> eklendi, false -> zaten vardı
-     */
     fun addToLibrary(username: String, book: Book): Boolean {
         val u = username.trim()
         if (u.isBlank()) return false
 
-        // Manuel eklenen kitapların ID'si çakışmasın diye basit kontrol
-        // (Repository zaten handle ediyordur ama yine de UI güncellensin)
+        // manuel eklenen kitapların ID'si çakışmasın diye basit kontrol yaparız
         val added = repo.addToLibrary(u, book)
 
-        // UI'daki "ekli mi" ikonları için anında refresh
         _libraryBooks.value = repo.getMyLibrary(u)
         return added
     }
@@ -212,10 +200,8 @@ class HomeViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    // 🌟 YENİ EKLENEN MANUEL KİTAP LİSTESİ (B PLANI)
-    // 🌟 GÜNCELLENMİŞ MANUEL LİSTE (DRAWABLE RESİMLERİ İLE)
+    // manuel eklediğim kitaplar
     private fun getOfflineFallbackBooks(): List<Book> {
-        // Uygulamanın paket ismini alıyoruz (Resim yolunu bulmak için lazım)
         val packageName = getApplication<Application>().packageName
 
         return listOf(
@@ -223,7 +209,6 @@ class HomeViewModel(app: Application) : AndroidViewModel(app) {
                 id = "manual_1",
                 title = "Suç ve Ceza",
                 author = "Fyodor Dostoyevski",
-                // 👇 DİKKAT: R.drawable.cover_suc_ve_ceza senin resim dosyanın adı olmalı
                 coverUrl = "android.resource://$packageName/${com.example.kitaplikapp.R.drawable.svc}",
                 description = "Rus edebiyatının en büyük eserlerinden biri...",
                 pageCount = 687,
@@ -234,7 +219,6 @@ class HomeViewModel(app: Application) : AndroidViewModel(app) {
                 id = "manual_2",
                 title = "Simyacı",
                 author = "Paulo Coelho",
-                // 👇 Resim ismini kendine göre düzelt
                 coverUrl = "android.resource://$packageName/${com.example.kitaplikapp.R.drawable.smyc}",
                 description = "Dünyaca ünlü bir kendini bulma hikayesi.",
                 pageCount = 188,

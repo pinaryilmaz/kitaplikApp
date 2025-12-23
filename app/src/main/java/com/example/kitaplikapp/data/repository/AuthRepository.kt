@@ -33,7 +33,7 @@ class AuthRepository(private val context: Context) {
             }
             list
         } catch (e: Exception) {
-            // Dosya formatı bozulmuşsa uygulama çökmek yerine sıfırlar
+            // Dosya formatı bozulmuşsa uygulama çökmek yerine sıfırlanır
             Log.e("AUTH", "users.json okunamadı, sıfırlanıyor. Hata: ${e.message}")
             mutableListOf()
         }
@@ -60,30 +60,30 @@ class AuthRepository(private val context: Context) {
         val u = username.trim()
         val p = password.trim()
 
-        // Zorunlu alan kontrolü
+        // Zorunlu alan doldurulması için
         if (n.isBlank() || e.isBlank() || u.isBlank() || p.isBlank()) return false
 
-        // Ad Soyad
+        // Ad Soyad için
         if (n.length < 3) return false
 
-        // Kullanıcı adı
+        // Kullanıcı adı için
         if (u.length < 3) return false
         if (u.contains(" ")) return false
 
-        // Şifre
+        // Şifre için kontrol
         if (p.length < 6) return false
 
-        // E-mail basit kontrol (UI tarafı Patterns kullanıyor; burada basit tutuyoruz)
+        // E-mail basit kontrol
         val emailOk = e.contains("@") && e.contains(".") && !e.contains(" ")
         if (!emailOk) return false
 
         val users = loadUsers()
 
-        // Kullanıcı adı benzersiz
+        // Kullanıcı adı benzersiz olmalı
         val usernameExists = users.any { it.username.equals(u, ignoreCase = true) }
         if (usernameExists) return false
 
-        // Email de benzersiz olsun istiyorsan aç:
+
         val emailExists = users.any { it.email.equals(e, ignoreCase = true) }
         if (emailExists) return false
 
@@ -112,7 +112,7 @@ class AuthRepository(private val context: Context) {
 
         users.add(User(username = u, password = p, fullName = n, email = e))
         saveUsers(users)
-        return null // başarı
+        return null
     }
 
     fun login(username: String, password: String): User? {
@@ -128,7 +128,6 @@ class AuthRepository(private val context: Context) {
         return found
     }
 
-    // İstersen debug için çağırırsın:
     fun dumpUsers(): String {
         val text = if (file.exists()) file.readText() else "<dosya yok>"
         Log.d("AUTH", "DUMP users.json = $text")

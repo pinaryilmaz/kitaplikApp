@@ -85,13 +85,13 @@ fun BookCard(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            // ✅ ALT İKON ALANI: sabit yükseklik + dikey ortalama (farkı bitirir)
+            // alt ikon alanı: sabit yükseklik + dikey ortalama
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(40.dp),                 // 🔥 sabitle
+                    .height(40.dp),
                 horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically // 🔥 sabitle
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 val boxSize = 34.dp
                 val iconSize = 18.dp

@@ -7,10 +7,10 @@ data class Book(
     val category: String= "",
     val coverUrl: String = "",
     val isRead: Boolean = false,
-    val createdByUser: Boolean = false, // API mi, kullanıcı mı ekledi ayırt etmek için
+    val createdByUser: Boolean = false, // API mi yoksa kullanıcı mı ekledi ayırt ederiz
     val isFavorite: Boolean = false,
     val note: String = "",
-    val language: String = "",      // "tr", "en" vb.
-    val pageCount: Int = 0, // yoksa 0 tut
+    val language: String = "",
+    val pageCount: Int = 0, // eğer sayfa sayısı yoksa 0 tutarız
     val description: String = ""
 )

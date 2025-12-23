@@ -33,8 +33,7 @@ class BookRepository(
     }
 
     /**
-     * Daha fazla sonuç için 2 sayfa çekiyoruz (Google Books maxResults üst sınır: 40)
-     */
+     * Daha fazla kitap göstermek için 2 sayfa çekeriz (Google Books maxResults üst sınır: 40)*/
     suspend fun searchFromApiOrFallback(username: String, query: String): List<Book> {
         return try {
             val r1 = remote.search(query = query, startIndex = 0, maxResults = 40)
@@ -42,7 +41,7 @@ class BookRepository(
 
             val items = (r1.items.orEmpty() + r2.items.orEmpty())
                 .filterNotNull()
-                // id null olabilirse, UUID ile map'te hallediyoruz; burada da id bazlı tekilleştiriyoruz
+                // ***id null olursa, UUID ile map'te da id bazlı tekilleştirme*/
                 .distinctBy { it.id ?: "" }
 
             val mapped = items.map { item ->

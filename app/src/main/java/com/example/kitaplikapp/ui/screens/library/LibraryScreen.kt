@@ -45,8 +45,8 @@ fun LibraryScreen(
     val username = user?.username?.trim().orEmpty()
 
     val libraryBooks by vm.libraryBooks.collectAsState()
-    var selectedFilter by remember { mutableStateOf(LibraryFilter.ALL) } // Tab filtreleri (Okundu, Favori vb.)
-    var query by remember { mutableStateOf("") } // Arama kutusu
+    var selectedFilter by remember { mutableStateOf(LibraryFilter.ALL) } // tab filtreleri (okundu, favori vb.)
+    var query by remember { mutableStateOf("") } // arama kutusu için state i hatırlama
 
     var noteDialogOpen by remember { mutableStateOf(false) }
     var noteBookId by remember { mutableStateOf<String?>(null) }
@@ -54,14 +54,14 @@ fun LibraryScreen(
 
     var filterSheetOpen by remember { mutableStateOf(false) }
 
-    // --- DETAYLI FİLTRE DEĞİŞKENLERİ (Uygulananlar) ---
+    // filtre değişkenleri
     var appliedCategory by remember { mutableStateOf<String?>(null) }
     var appliedAuthor by remember { mutableStateOf("") }
     var appliedLanguage by remember { mutableStateOf<String?>(null) }
     var appliedMinPages by remember { mutableStateOf(0) }
     var appliedMaxPages by remember { mutableStateOf(5000) }
 
-    // --- GEÇİCİ DEĞİŞKENLER (Sheet içinde oynananlar) ---
+    // geçici değişkenler
     var tmpCategory by remember { mutableStateOf<String?>(null) }
     var tmpAuthor by remember { mutableStateOf("") }
     var tmpLanguage by remember { mutableStateOf<String?>(null) }
@@ -83,7 +83,6 @@ fun LibraryScreen(
 
     LaunchedEffect(username) { vm.refreshLibrary(username) }
 
-    // Kitaplığındaki mevcut kitaplardan kategori/dil listelerini çıkar
     val categories = remember(libraryBooks) {
         libraryBooks.map { it.category.trim() }
             .filter { it.isNotBlank() }
@@ -102,7 +101,6 @@ fun LibraryScreen(
         max(1, libraryBooks.maxOfOrNull { it.pageCount } ?: 0)
     }
 
-    // Not Ekleme Dialogu
     if (noteDialogOpen) {
         AlertDialog(
             onDismissRequest = { noteDialogOpen = false },
@@ -129,10 +127,9 @@ fun LibraryScreen(
         )
     }
 
-    // ✅ FİLTRELEME PENCERESİ (BURAYI DOLDURDUK)
     if (filterSheetOpen) {
         LaunchedEffect(Unit) {
-            // Sheet açılınca mevcut uygulanan değerleri geçici değişkenlere yükle
+            // Sheet açılınca mevcut uygulanan değerleri geçici değişkenlere yükleriz
             tmpCategory = appliedCategory
             tmpAuthor = appliedAuthor
             tmpLanguage = appliedLanguage
@@ -151,7 +148,6 @@ fun LibraryScreen(
             ) {
                 item { Text("Kitaplığımı Filtrele", style = MaterialTheme.typography.titleLarge) }
 
-                // 1. Tür Seçimi
                 item { Text("Tür", style = MaterialTheme.typography.titleMedium) }
                 item {
                     var catMenu by remember { mutableStateOf(false) }
@@ -176,7 +172,6 @@ fun LibraryScreen(
                     }
                 }
 
-                // 2. Yazar Seçimi
                 item { Text("Yazar", style = MaterialTheme.typography.titleMedium) }
                 item {
                     OutlinedTextField(
@@ -188,7 +183,6 @@ fun LibraryScreen(
                     )
                 }
 
-                // 3. Dil Seçimi
                 item { Text("Dil", style = MaterialTheme.typography.titleMedium) }
                 item {
                     var langMenu by remember { mutableStateOf(false) }
@@ -213,7 +207,6 @@ fun LibraryScreen(
                     }
                 }
 
-                // 4. Sayfa Sayısı
                 item { Text("Sayfa sayısı", style = MaterialTheme.typography.titleMedium) }
                 item {
                     Text(
@@ -234,7 +227,7 @@ fun LibraryScreen(
                     )
                 }
 
-                // 5. Butonlar (Temizle / Uygula)
+                // butonlar (temizle / uygula)
                 item {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -268,7 +261,7 @@ fun LibraryScreen(
         }
     }
 
-    // FİLTRELEME MANTIĞI
+    // filtreleme mantığı
     val filteredBooks = remember(
         libraryBooks, selectedFilter, appliedCategory, appliedAuthor, appliedLanguage, appliedMinPages, appliedMaxPages, query, maxPagesInLibrary
     ) {
@@ -278,7 +271,6 @@ fun LibraryScreen(
 
         libraryBooks.asSequence()
             .filter { book ->
-                // Tab Filtreleri (Tümü, Okundu, Favori vs.)
                 when (selectedFilter) {
                     LibraryFilter.ALL -> true
                     LibraryFilter.READ -> book.isRead
@@ -286,7 +278,6 @@ fun LibraryScreen(
                     LibraryFilter.FAVORITES -> book.isFavorite
                 }
             }
-            // Detaylı Filtreler
             .filter { book -> appliedCategory == null || book.category.equals(appliedCategory, ignoreCase = true) }
             .filter { book -> appliedLanguage == null || book.language.equals(appliedLanguage, ignoreCase = true) }
             .filter { book -> authorQ.isBlank() || book.author.lowercase().contains(authorQ) }
@@ -294,7 +285,6 @@ fun LibraryScreen(
                 if (!pageFilterActive) true
                 else book.pageCount > 0 && book.pageCount in appliedMinPages..appliedMaxPages
             }
-            // Arama Kutusu
             .filter { book ->
                 if (q.isBlank()) true
                 else {
@@ -393,7 +383,7 @@ fun LibraryScreen(
                 }
             }
 
-            // SWIPE TO DELETE + TIKLAMA İLE DETAY
+            // kaydırarak silme
             items(filteredBooks, key = { it.id }) { book ->
                 val dismissState = rememberSwipeToDismissBoxState(
                     confirmValueChange = {
@@ -441,7 +431,6 @@ fun LibraryScreen(
                             noteText = book.note
                             noteDialogOpen = true
                         },
-                        // ✅ Detaya git
                         onClick = { navController.navigate("detail/${book.id}") }
                     )
                 }
@@ -456,12 +445,12 @@ private fun LibraryBookItem(
     onToggleRead: () -> Unit,
     onToggleFavorite: () -> Unit,
     onNoteClick: () -> Unit,
-    onClick: () -> Unit // Yeni callback
+    onClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick() }, // ✅ Karta tıklayınca çalışır
+            .clickable { onClick() },
         shape = RoundedCornerShape(14.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
     ) {

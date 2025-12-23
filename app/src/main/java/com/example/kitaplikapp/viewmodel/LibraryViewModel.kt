@@ -15,7 +15,6 @@ class LibraryViewModel(app: Application) : AndroidViewModel(app) {
     private val _myBooks = MutableStateFlow<List<Book>>(emptyList())
     val myBooks: StateFlow<List<Book>> = _myBooks.asStateFlow()
 
-    /** Bu kullanıcı için kitaplığı yükle */
     fun refresh(username: String) {
         if (username.isBlank()) {
             _myBooks.value = emptyList()

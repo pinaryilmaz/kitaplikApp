@@ -32,12 +32,9 @@ class AuthViewModel(app: Application) : AndroidViewModel(app) {
         _loggedInUser.value = null
     }
 
-    // ✅ YENİ EKLENEN FONKSİYON: Kullanıcı Bilgilerini Güncelleme
     fun updateUser(name: String, username: String, pass: String) {
         val currentUser = _loggedInUser.value
         if (currentUser != null) {
-            // Mevcut kullanıcının bir kopyasını oluşturup yeni değerleri atıyoruz
-            // Bu sayede SettingsScreen anında güncelleniyor
             _loggedInUser.value = currentUser.copy(
                 fullName = name,
                 username = username,

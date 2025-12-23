@@ -43,14 +43,14 @@ fun MainBottomBar(navController: NavController) {
     val orientation = LocalConfiguration.current.orientation
 
     val barHeight = if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-        48.dp   // 🔄 yatay
+        48.dp
     } else {
-        52.dp   // 📱 dikey
+        52.dp
     }
 
     NavigationBar(
         modifier = Modifier.height(barHeight),
-        windowInsets = WindowInsets(0, 0, 0, 0), // 🔥 ikon kesilmesini engeller
+        windowInsets = WindowInsets(0, 0, 0, 0),
         tonalElevation = 6.dp
     ) {
 

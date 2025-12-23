@@ -34,7 +34,7 @@ import kotlin.math.max
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    navController: NavController, // ✅ NavController eklendi
+    navController: NavController,
     authVm: AuthViewModel,
     vm: HomeViewModel = viewModel()
 ) {
@@ -53,7 +53,7 @@ fun HomeScreen(
 
     var filterSheetOpen by remember { mutableStateOf(false) }
 
-    // Filtre State'leri
+    // filtre için state'ler
     var appliedCategory by remember { mutableStateOf<String?>(null) }
     var appliedAuthor by remember { mutableStateOf("") }
     var appliedLanguage by remember { mutableStateOf<String?>(null) }
@@ -119,7 +119,6 @@ fun HomeScreen(
             .toList()
     }
 
-    // Filter Sheet
     if (filterSheetOpen) {
         LaunchedEffect(Unit) {
             tmpCategory = appliedCategory
@@ -216,7 +215,7 @@ fun HomeScreen(
                 .padding(16.dp)
                 .imePadding()
         ) {
-            // Arama Barı
+            // search bar
             Row(verticalAlignment = Alignment.CenterVertically) {
                 OutlinedTextField(
                     value = query, onValueChange = { query = it },
@@ -252,9 +251,7 @@ fun HomeScreen(
                     HomeBookItem(
                         book = book,
                         isAdded = isAdded,
-                        // ✅ Detaya git
                         onCardClick = { navController.navigate("detail/${book.id}") },
-                        // ✅ Kitaplığa ekle
                         onAdd = {
                             val added = vm.addToLibrary(username, book)
                             scope.launch {
@@ -272,18 +269,18 @@ fun HomeScreen(
     }
 }
 
-// ✅ GÜNCELLENMİŞ KART BİLEŞENİ
+// kart bileşeni
 @Composable
 fun HomeBookItem(
     book: Book,
     isAdded: Boolean,
     onAdd: () -> Unit,
-    onCardClick: () -> Unit // Yeni callback
+    onCardClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onCardClick() }, // ✅ Karta tıklayınca detaya git
+            .clickable { onCardClick() },
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
@@ -306,7 +303,7 @@ fun HomeBookItem(
                         .align(Alignment.BottomEnd)
                         .padding(8.dp)
                         .size(32.dp)
-                        .clickable { onAdd() }, // ✅ Sadece buraya basınca ekle
+                        .clickable { onAdd() },
                     shape = CircleShape,
                     color = if (isAdded) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
                     shadowElevation = 4.dp

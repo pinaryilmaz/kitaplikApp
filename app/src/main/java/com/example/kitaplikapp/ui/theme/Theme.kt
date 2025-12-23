@@ -37,7 +37,6 @@ private val LightColorScheme = lightColorScheme(
 )
 
 private val DarkColorScheme = darkColorScheme(
-    // Dark modda da moru koruyup yüzeyleri koyulaştırıyoruz
     primary = Color(0xFFBDB4FF),
     onPrimary = Color(0xFF160B2E),
     primaryContainer = Color(0xFF2B1E70),
@@ -75,7 +74,7 @@ fun KitaplikAppTheme(
 
     MaterialTheme(
         colorScheme = colors,
-        typography = Typography, // Projede Typography.kt varsa aynen kalsın
+        typography = Typography,
         content = content
     )
 }
