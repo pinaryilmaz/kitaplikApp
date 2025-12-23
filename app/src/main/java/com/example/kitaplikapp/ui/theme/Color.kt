@@ -1,0 +1,49 @@
+package com.example.kitaplikapp.ui.theme
+
+import androidx.compose.ui.graphics.Color
+
+// MOR – LİLA (Premium) Tema
+
+// 🔹 Ana mor (ikon, button, vurgu)
+val Primary = Color(0xFF6A5AE0)
+val OnPrimary = Color(0xFFFFFFFF)
+
+// 🔹 Screen-level arka plan (Home / Library / Settings)
+val SoftPurple = Color(0xFF7B6CF6)
+
+// 🔹 Container morlar
+val PrimaryContainer = Color(0xFFE6E3FF)
+val OnPrimaryContainer = Color(0xFF1B1144)
+
+// 🔹 Secondary
+val Secondary = Color(0xFF8B7CF4)
+val OnSecondary = Color(0xFFFFFFFF)
+
+val SecondaryContainer = Color(0xFFEDEBFF)
+val OnSecondaryContainer = Color(0xFF1B1144)
+
+// 🔹 Accent (çok az kullan)
+val Tertiary = Color(0xFF4EC1A6)
+val OnTertiary = Color(0xFF0B2B24)
+
+// 🔹 Sistem arka planları (Theme için)
+val Background = Color(0xFFFAFAFC)
+val OnBackground = Color(0xFF1C1C1E)
+
+// 🔹 Card / yüzey
+val Surface = Color(0xFFFFFFFF)
+val OnSurface = Color(0xFF1C1C1E)
+
+// 🔹 Soft yüzey varyantı (opsiyonel, açık lila)
+val SurfaceVariant = Color(0xFFF1F0FA)
+val OnSurfaceVariant = Color(0xFF6B6B76)
+
+// 🔹 Çizgiler
+val Outline = Color(0xFFD4D1E8)
+
+// 🔹 Durum renkleri
+val Error = Color(0xFFE5484D)
+val OnError = Color(0xFFFFFFFF)
+
+val Success = Color(0xFF22C55E)
+val Warning = Color(0xFFF59E0B)
